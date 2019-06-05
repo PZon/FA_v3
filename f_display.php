@@ -148,9 +148,9 @@ function displayRegisterForm(){
 				<input type="password" class="form-control" id="password2" name="pass2" required>
 				<small id="registerHelp" class="form-text text-warning">Fields with * are required</small>
 			  </div>
-			  <div class="form-group">
-				<div class="g-recaptcha" data-sitekey="6LfvQacUAAAAAAgYlAuiJsXbddEzXAGpUZ02L0No"></div>
-			  </div>
+			  <!--div class="form-group">
+				<div class="g-recaptcha" data-sitekey="Page key"></div>
+			  </div-->
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			<button type="submit" class="btn btn-warning">Register</button>
@@ -212,7 +212,7 @@ function bottomPage(){
 ?>
 <footer>
  <div class="f_one">
-	&copy; <?=date('Y')?> PZon - 1,21 p3
+	&copy; <?=date('Y')?> PZon
  </div>
 </footer>
 	
@@ -244,9 +244,169 @@ function bottomPage(){
 </html>	
 <?php
 }
+
+function displayTransactionButtons(){
 ?>
+<div id="transBtns" class="row mt-5 justify-content-md-center">
+  <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
+  <button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
+ </div> 
+ 	<!--- Add income MODAL -->
+	<div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="addIncome" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addIncomeLabel">Add income:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="addTransactionVerify.php" method="post">
+			<input type="text" class="form-control" id="userIdI" value="$_SESSION" hidden>
+			<input type="text" class="form-control" id="transactionTypeI" value="I" hidden>
+			<input type="text" class="form-control" id="transactionIdI" value="$_SESSION" hidden>
+			  <div class="form-group">
+				<label for="incomeDate" class="col-form-label">Date:</label>
+				<input type="text" class="form-control" id="incomeDate">
+			  </div>
+			  <div class="form-group">
+				<label for="amountI" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amountI">
+			  </div>
+			  <div class="form-group">
+				<label for="categoryI" class="col-form-label">Category:</label>
+				<input type="text" class="form-control" id="categoryI">
+			  </div>
+			  <div class="form-group">
+				<label for="descriptionI" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="descriptionI" maxlength="50">
+			  </div>
 
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Save income</button>
+		  </div>
+		  </form>
+		 </div> 
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<!--- Add expense MODAL -->
+	<div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addExpenseLabel">Add expense:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <form action="addTransactionVerify.php">
+			<input type="text" class="form-control" id="userIdE" value="$_SESSION" hidden>
+			<input type="text" class="form-control" id="transactionTypeE" value="E" hidden>
+			<input type="text" class="form-control" id="transactionIdE" value="$_SESSION" hidden>
+			  <div class="form-group">
+				<label for="expenseDate" class="col-form-label">Date:</label>
+				<input type="text" class="form-control" id="expenseDate">
+			  </div>
+			  <div class="form-group">
+				<label for="amountE" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amountE">
+			  </div>
+			  <div class="form-group">
+				<label for="categoryE" class="col-form-label">Category:</label>
+				<input type="text" class="form-control" id="categoryE">
+			  </div>
+			  <div class="form-group">
+				<label for="descriptionE" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="descriptionE" maxlength="50">
+			  </div>
+			
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-warning">Save expense</button>
+			  </div>
+		  </form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<?php
+}
 
+function editTransactionIcon(){
+?>
+<a href="#" title="Edit&Remove" data-toggle="modal" data-target="#editTransaction"><i class="fas fa-edit"></i></a>
+
+<!--- edit Transation MODAL -->
+	<div class="modal fade" id="editTransaction" tabindex="-1" role="dialog" aria-labelledby="editTransaction" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="editTransactionLabel">Edit Transaction</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="editTransactionVerify.php">
+			 <input type="text" class="form-control" id="userId" value="$_SESSION" hidden>
+			<input type="text" class="form-control" id="transactionType" value="$_SESSION" hidden>
+			<input type="text" class="form-control" id="transactionId" value="$_SESSION" hidden>
+			  <div class="form-group">
+				<label for="transactionDate" class="col-form-label">Date:</label>
+				<input type="text" class="form-control" id="transactionDate" placeholder="$_SESSION">
+			  </div>
+			  <div class="form-group">
+				<label for="amount" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amount" placeholder="$_SESSION">
+			  </div>
+			  <div class="form-group">
+				<label for="category" class="col-form-label">Category:</label>
+				<input type="text" class="form-control" id="Category" placeholder="$_SESSION">
+			  </div>
+			  <div class="form-group">
+				<label for="description" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="description" maxlength="50" placeholder="$_SESSION">
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#removeTransaction">Remove transaction</button>
+			<button type="submit" class="btn btn-warning">Save changes</button>
+		  </div>
+		  </form>
+		 </div>
+		</div>
+	  </div>
+	</div>
+<!--- remove transaction Modal -->
+	<div class="modal fade" id="removeTransaction" tabindex="-1" role="dialog" aria-labelledby="removeTransaction" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div id="removeTransModal" class="modal-content">
+		  <div class="modal-header">
+			<h6 class="modal-title text-danger" id="removeTransactionLabel">Remove transaction !!!</h6>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<p class="text-danger">Please confirm you want to remove this transaction?</p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+			<a class="btn btn-danger" href="removeTransaction.php" role="button" >Yes</a>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<?php
+}
+?>
 
 
 

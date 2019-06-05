@@ -49,9 +49,9 @@ echo '<hr>';
 		<small id="passHelp" class="form-text text-warning">* indicates required fields </small>
 	  </div>
 	 </div>
-	 <div class="row justify-content-sm-center">
-	  <div class="g-recaptcha" data-sitekey="6LfvQacUAAAAAAgYlAuiJsXbddEzXAGpUZ02L0No"></div>
-	 </div>
+	 <!--div class="row justify-content-sm-center">
+	  <div class="g-recaptcha" data-sitekey="Page Key"></div>
+	 </div-->
 	 <div class="row justify-content-sm-center">
 	  <button type="submit" class="btn btn-warning col-sm-3 m-md-3">REGISTER</button>
 	 </div>
