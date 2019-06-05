@@ -90,17 +90,17 @@ article{
 	text-align:center;
 	text-shadow:2px 2px #000;
 }
-#homePage{
+#mainPage{
  text-align:center;
  font-family: 'Anton', sans-serif;
 }
-#homePage p{
+#mainPage p{
  font-size:20px;
  text-shadow:2px 2px #000;
  text-align:justify;
 }
-#homePage h6,
-#homePage h5{
+#mainPage h6,
+#mainPage h5{
  font-family: 'Diplomata SC', cursive;
 }
 a{
@@ -180,4 +180,7 @@ table tr th, td{
 #removeTransModal{
 	border:2px solid #dc3545;
 	font-weight:bold;
+}
+.g-recaptcha{
+ display: inline-block;
 }

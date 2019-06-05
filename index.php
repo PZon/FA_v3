@@ -1,15 +1,19 @@
 <?php
+session_start();
 require_once('functions_main.php');
 
-if(isset($_SESSION['registered'])){
-	header('Location:user_links.php?a=active');
+if(isset($_SESSION['userVerified'])){
+	header('Location:statements.php?view=cm');
 }
 
 topPage();
+displayCarousel();
 /************************************/
 ?>
+<main>
+<article>
 <h2>Welcome to Finance Assitant</h2><hr class="mb-5">
- <div id="homePage" class="container">
+ <div id="mainPage" class="container">
   <div class="row mb-3">
 	<div class="col-sm-12 col-md-7 ">
 	 <p>&nbsp; Managing household expenses can seem like a scary thing. It's important to confront your finances and create an effective household budget to help you get a grasp on your finances and limits.<br /><br />
@@ -18,14 +22,20 @@ topPage();
 	</div>
 	<div id="logForm" class="col-sm-12 col-md-4 pt-md-3 mb-md-5 ml-md-3 divBorder">
 	 <h4 class="mb-4">To use Finance Assistant please Log In</h4>
-		<form action="f_LogReg.php" method="post">
+	 	<?php
+		 if(isset($_SESSION['logInError'])){
+			 echo $_SESSION['logInError'];
+			 unset($_SESSION['logInError']);
+		 }
+		?>
+		<form action="loginVeryfication.php" method="post">
 		  <div class="form-group">
 		   <label for="InputLogin">Login</label>
-			<input type="text" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="Enter Login" required>
+			<input type="text" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="Enter Login" name="nick" required>
 		  </div>
 		  <div class="form-group">
 			<label for="InputPassword">Password</label>
-			<input type="password" class="form-control" id="InputPassword"  aria-describedby="InputPassword" placeholder="Password" required>
+			<input type="password" class="form-control" id="InputPassword"  aria-describedby="InputPassword" placeholder="Password" name="pass" required>
 			<small id="passHelp" class="form-text text-warning">Never share your password with anyone else.</small>
 		  </div>
 		  <button type="submit" class="m-1 btn btn-warning">Log In</button>
@@ -34,7 +44,11 @@ topPage();
 </div><hr>
 <?php
 displayRegisterForm();
+?>
+</div>
+</article>
+</main>	
+<?php
 /************************************/
 bottomPage();
-
 ?>
