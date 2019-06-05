@@ -93,10 +93,11 @@ article{
 #mainPage{
  text-align:center;
  font-family: 'Anton', sans-serif;
+ text-shadow:2px 2px #000;
 }
 #mainPage p{
  font-size:20px;
- text-shadow:2px 2px #000;
+ 
  text-align:justify;
 }
 #mainPage h6,
