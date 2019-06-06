@@ -2,10 +2,8 @@
 session_start();
 require_once('functions_main.php');
 
-if(!isset($_SESSION['userVerified'])){
-	header('location:index.php');
-	exit();
-}
+verifyUser();
+
 $view=$_GET['view'];
 
 $currentYear=date('Y');
@@ -66,7 +64,7 @@ displayMainMenu();
 			 <td>{$row['idIncome']}</td>
 			 <td>{$row['incomeDate']}</td>
 			 <td>{$row['incomeAmount']}</td>
-			 <td>{$row['idUserCatIn']}</td>
+			 <td>{$row['idIncomeCat']}</td>
 			 <td>{$row['incomeDescr']}</td>
 			 <th>";
 			 echo editTransactionIcon()."</th>
