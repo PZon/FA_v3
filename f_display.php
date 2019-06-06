@@ -173,19 +173,19 @@ function displayMainMenu(){
   </button>
   <div class="collapse navbar-collapse" id="menuToggler">
 	 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" href="index.php"><i class='fas fa-landmark'></i> Home</a>
 	  </li>
-	  <li class="nav-item active">
-        <a class="nav-link" href="boot_statements.html?view=cm"><i class='fas fa-chart-line'></i> Statements<span class="sr-only">(current)</span></a>
+	  <li class="nav-item">
+        <a class="nav-link" href="statements.php?view=cm"><i class='fas fa-chart-line'></i> Statements</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class='fas fa-money-bill'></i> Transaction
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-          <a class="dropdown-item" href="b_transaction.html?type=I">&#9656; Add Income</a>
-          <a class="dropdown-item" href="b_transaction.html?type=E">&#9656; Add Expense</a>
+          <a class="dropdown-item" href="transaction.php?type=I">&#9656; Add Income</a>
+          <a class="dropdown-item" href="transaction.php?type=E">&#9656; Add Expense</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -263,24 +263,23 @@ function displayTransactionButtons(){
 		  </div>
 		  <div class="modal-body">
 			<form action="addTransactionVerify.php" method="post">
-			<input type="text" class="form-control" id="userIdI" value="$_SESSION" hidden>
-			<input type="text" class="form-control" id="transactionTypeI" value="I" hidden>
-			<input type="text" class="form-control" id="transactionIdI" value="$_SESSION" hidden>
+			<input type="text" class="form-control" id="userIdI" value="<?php $_SESSION['idUser']?>" name="idUser" hidden>
+			<input type="text" class="form-control" id="transactionTypeI" value="I" name="transactionType" hidden>
 			  <div class="form-group">
 				<label for="incomeDate" class="col-form-label">Date:</label>
-				<input type="text" class="form-control" id="incomeDate">
+				<input type="text" class="form-control" id="incomeDate" name="incomeDate">
 			  </div>
 			  <div class="form-group">
 				<label for="amountI" class="col-form-label">Amount:</label>
-				<input type="text" class="form-control" id="amountI">
+				<input type="text" class="form-control" id="amountI" name="amountI">
 			  </div>
 			  <div class="form-group">
 				<label for="categoryI" class="col-form-label">Category:</label>
-				<input type="text" class="form-control" id="categoryI">
+				<input type="text" class="form-control" id="categoryI" name="categoryI">
 			  </div>
 			  <div class="form-group">
 				<label for="descriptionI" class="col-form-label">Description:</label>
-				<input type="text" class="form-control" id="descriptionI" maxlength="50">
+				<input type="text" class="form-control" id="descriptionI" maxlength="50" name="descriptionI">
 			  </div>
 
 		  <div class="modal-footer">
@@ -406,7 +405,122 @@ function editTransactionIcon(){
 <!--- end modal -->
 <?php
 }
+
+function displayAddIncomeForm(){
 ?>
 
+<main>
+ <article>
+ <div id="mainPage" class="container">
+  <div class="row">
+   <div class="col-sm-12 ">
+    <h5>Welcome to Finance Assitant: <?=$_SESSION['userVerified']?></h5>
+   </div>
+  </div><hr>
+  <h5>Add Income</h5><br>
+  <?php
+  if(isset($_SESSION['addTransError'])){
+	echo '<p class="text-danger text-center">';
+	echo $_SESSION['addTransError'];
+	echo '</p>';
+    unset ($_SESSION['addTransError']);
+  }
+  ?>
+	<form action="addTransactionVerify.php" method="post">
+	 <input type="text" class="form-control" id="userId" value="<?= $_SESSION['idUser']?>" name="idUser" hidden>
+	 <input type="text" class="form-control" id="transactionType" value="I" name="transactionType" hidden>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-3">
+		<label for="transactionDate" class="col-form-label">Date:</label>
+		<input type="text" class="form-control" id="transactionDate" name="transactionDate" required>
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="amount" class="col-form-label">Amount:</label>
+		<input type="text" class="form-control" id="amount" name="amount" required>
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="Category" class="col-form-label">Category:</label>
+		<input type="text" class="form-control" id="Category" name="Category" required>
+	  </div>
+	 </div>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-6">
+		<label for="description" class="col-form-label">Description:</label>
+		<input type="text" class="form-control" id="description" maxlength="50" name="description" required>
+	  </div>
+	 </div>
+	 <div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-success col-sm-4 m-md-4">Add transaction</button>
+	 </div>
+	 <div  class="row justify-content-sm-center">
+	  <a  class="btnCategory btn btn-warning col-sm-3 m-md-3 " role="button">Add income category</a>
+	 </div>
+	</form>
+ </div>
+ </article>
+</main>	
+<?php
+}
+
+function displayAddExpenseForm(){
+?>
+
+<main>
+ <article>
+ <div id="mainPage" class="container">
+  <div class="row">
+   <div class="col-sm-12 ">
+    <h5>Welcome to Finance Assitant: <?=$_SESSION['userVerified']?></h5>
+   </div>
+  </div><hr>
+  <h5>Add Expese</h5><br>
+    <?php
+	if(isset($_SESSION['addTransError'])){
+		echo '<p class="text-danger text-center">';
+		echo $_SESSION['addTransError'];
+		echo '</p>';
+		unset ($_SESSION['addTransError']);
+	}
+	?>
+	<form action="addTransactionVerify.php" method="post">
+	 <input type="text" class="form-control" id="userId" value="<?= $_SESSION['idUser']?>" name="idUser" hidden>
+	 <input type="text" class="form-control" id="transactionType" value="E" name="transactionType" hidden>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-3">
+		<label for="transactionDate" class="col-form-label">Date:</label>
+		<input type="text" class="form-control" id="transactionDate" name="transactionDate">
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="amount" class="col-form-label">Amount:</label>
+		<input type="text" class="form-control" id="amount" name="amount">
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="payType" class="col-form-label">Payment type:</label>
+		<input type="text" class="form-control" id="payType" name="payType">
+	  </div>
+	 </div>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-3">
+		<label for="Category" class="col-form-label">Category:</label>
+		<input type="text" class="form-control" id="Category" name="Category">
+	  </div>
+	  <div class="form-group col-md-6">
+		<label for="description" class="col-form-label">Description:</label>
+		<input type="text" class="form-control" id="description" maxlength="50" name="description">
+	  </div>
+	 </div>
+	 <div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-success col-sm-4 m-md-4">Add transaction</button>
+	 </div>
+	 <div  class="row justify-content-sm-center">
+	  <a  class="btnCategory btn btn-warning col-sm-3 m-md-3 " role="button">Add expense category</a>
+	 </div>
+	</form>
+ </div>
+ </article>
+</main>	
+<?php
+}
+?>
 
 

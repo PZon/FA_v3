@@ -175,8 +175,13 @@ table tr th, td{
 .table-bordered th {
     border: 1px solid #ccac77;;
 }
-.btn-danger{
+.btn-danger,
+.btn-warning{
 	text-shadow:0 0 transparent;
+}
+.btnCategory{
+	color:white !important;
+	font-weight:bold;
 }
 #removeTransModal{
 	border:2px solid #dc3545;
