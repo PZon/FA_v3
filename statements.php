@@ -13,14 +13,76 @@ $currentYM=$currentYear.'-'.$currentMonth.'-01';
 $prevYM=$currentYear.'-'.$prevMonth.'-01';
 $prevYMEnd=$currentYear.'-'.$prevMonth.'-31';
 
-if($view=='cm'){
- $sqlQuery=$db->query("Select * from income where idUser = {$_SESSION['idUser']} and incomeDate >= '$currentYM'");
+if($view=='cm'||($view=='cp' && !isset($_POST['dateFrom']))){
+ $sqlQueryI=$db->query("select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
+ WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$currentYM'
+ UNION
+ select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+ JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+ WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$currentYM'
+ ORDER BY incomeDate");
+ 
+ $sqlQueryE=$db->query("SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+ JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+ JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$currentYM'
+ UNION 
+ SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+ JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+ JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$currentYM'
+ ORDER BY expenseDate");
+
 }else if($view=='pm'){
- $sqlQuery=$db->query("Select * from income where idUser = {$_SESSION['idUser']} and incomeDate BETWEEN '$prevYM' AND '$prevYMEnd'");	
-}else if($view=='cp'){
-	//?????
+ $sqlQueryI=$db->query("select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
+ WHERE i.idUser={$_SESSION['idUser']} 
+ AND i.incomeDate BETWEEN '$prevYM' AND '$prevYMEnd' 
+ UNION
+ select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+ JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+ WHERE i.idUser={$_SESSION['idUser']} 
+ AND i.incomeDate BETWEEN '$prevYM' AND '$prevYMEnd'ORDER BY incomeDate");
+ 
+ $sqlQueryE=$db->query("SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+ JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+ JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+ e.expenseDate BETWEEN '$prevYM' AND '$prevYMEnd'
+ UNION 
+ SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+ JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+ JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
+ e.expenseDate BETWEEN '$prevYM' AND '$prevYMEnd'ORDER BY expenseDate");
+}else if($view=='cp' && isset($_POST['dateFrom'])){
+ $dateFrom=$_POST['dateFrom'];
+ $dateTo=$_POST['dateTo'];
+	
+ $sqlQueryI=$db->query("select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
+ WHERE i.idUser={$_SESSION['idUser']} 
+ AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' 
+ UNION
+ select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+ JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+ WHERE i.idUser={$_SESSION['idUser']} 
+ AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY incomeDate");
+ 
+ $sqlQueryE=$db->query("SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+ JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+ JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+ e.expenseDate BETWEEN '$dateFrom' AND '$dateTo'
+ UNION 
+ SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+ JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+ JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
+ e.expenseDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY expenseDate");
 }
-$incomes=$sqlQuery->fetchAll();
+
+
+
+$incomes=$sqlQueryI->fetchAll();
+$expenses=$sqlQueryE->fetchAll();
+
+
 
 topPage();
 displayMainMenu();
@@ -29,8 +91,8 @@ displayMainMenu();
 <main>
 <div id="mainPage" class="container">
  <div class="row mb-5">
-   <div class="col-sm-12 col-md-7">
-    <h5>Welcome to Finance Assitant: <?= $_SESSION['userVerified']?></h5>
+   <div class="col-sm-12 col-md-8">
+    <h5>Welcome to Finance Assitant: <br /><?= $_SESSION['userVerified']?></h5>
    </div>
    <div class="col-sm-12 col-md-4">
     <div class="dropdown">
@@ -43,13 +105,19 @@ displayMainMenu();
     </div>
    </div>
   </div>
-
+<?php
+	if($view=='cp'){
+		displayStatementDatepicker();
+	}
+?>
 <hr>
   <div class="row">
 	<table class="table table-hover table-bordered">
-	  <thead class="bg-dark">
-		<tr>
-		  <th scope="col">Id</th>
+	  <thead>
+		<tr class="bg-success">
+		  <th class="tbStyle" colspan="5">INCOMES</th>
+		</tr>
+		<tr class="bg-dark">
 		  <th scope="col">Date</th>
 		  <th scope="col">Amount</th>
 		  <th scope="col">Category</th>
@@ -61,10 +129,9 @@ displayMainMenu();
 	   <?php
 		foreach($incomes as $row){
 			echo"<tr>
-			 <td>{$row['idIncome']}</td>
 			 <td>{$row['incomeDate']}</td>
 			 <td>{$row['incomeAmount']}</td>
-			 <td>{$row['idIncomeCat']}</td>
+			 <td>{$row['nameCatI']}</td>
 			 <td>{$row['incomeDescr']}</td>
 			 <th>";
 			 echo editTransactionIcon()."</th>
@@ -74,7 +141,39 @@ displayMainMenu();
 	  </tbody>
   </table>
  </div>
-<?php displayTransactionButtons() ?>  
+ <div class="row">
+	<table class="table table-hover table-bordered">
+	  <thead >
+	  <tr class="bg-danger">
+		  <th class="tbStyle" colspan="6">EXPENSES</th>
+	  </tr>
+		<tr class="bg-dark" >
+		  <th scope="col">Date</th>
+		  <th scope="col">Amount</th>
+		  <th scope="col">Category</th>
+		  <th scope="col">Description</th>
+		  <th scope="col">Payment type</th>
+		  <th scope="col">Options</th>
+		</tr>
+	  </thead>
+	  <tbody>
+	   <?php
+		foreach($expenses as $row){
+			echo"<tr>
+			 <td>{$row['expenseDate']}</td>
+			 <td>{$row['expenseAmount']}</td>
+			 <td>{$row['nameCatE']}</td>
+			 <td>{$row['expenseDescr']}</td>
+			 <td>{$row['nameCatPay']}</td>
+			 <th>";
+			 echo editTransactionIcon();"</th>
+			</tr>";
+		}
+	   ?>
+	  </tbody>
+  </table>
+ </div>
+<?php displayTransactionButtons($db) ?>  
 </div>
 </article>
 </main>	
