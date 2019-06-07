@@ -2,22 +2,28 @@
 session_start();
 require_once('functions_main.php');
 
-if(isset($_POST['idUser'])){
- $userId=$_POST['idUser'];
+if(isset($_POST['transactionType'])){
+ $userId=$_SESSION['idUser'];
  $transactionType=$_POST['transactionType'];
  $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
  $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_STRING);
  $category=$_POST['Category'];
  $description=filter_input(INPUT_POST,'description',FILTER_SANITIZE_STRING);
- if($transactionType=='E') $payType=filter_input(INPUT_POST,'payType',FILTER_SANITIZE_STRING);
+ if($transactionType=='E') {
+	 $payType=filter_input(INPUT_POST,'payType',FILTER_SANITIZE_STRING);
+ }
 }
 
  $formValidation=true;
  if(is_numeric($amount)==false){
 	$formValidation=false;
 	$_SESSION['addTransError']='ERROR: Incorrect amount, Use (dot) . (not comma ,) to write decimals' ;
-     if($transactionType=='I')header('Location: transaction.php?type=I');
-	 else header('Location: transaction.php?type=E');
+     if($transactionType=='I'){
+	  header('Location: transaction.php?type=I');
+	 }
+	 else if($transactionType=='E'){
+		 header('Location: transaction.php?type=E');
+	 }
 	 exit();
  }
  
@@ -27,6 +33,23 @@ if(isset($_POST['idUser'])){
     if($transactionType=='I')header('Location: transaction.php?type=I');
 	else header('Location: transaction.php?type=E');
 	 exit();
+ }
+ 
+ if($category==0){
+	$formValidation=false;
+	$_SESSION['addTransError']='ERROR: Category type must be chosen';
+    if($transactionType=='I')header('Location: transaction.php?type=I');
+	else header('Location: transaction.php?type=E');
+	 exit();
+ }
+ 
+ if(isset($_POST['payType'])){
+	 if($payType==0){
+		$formValidation=false;
+		$_SESSION['addTransError']='ERROR: Payment type must be chosen';
+	 header('Location: transaction.php?type=E');
+	exit(); 
+	 }
  }
 
 if($formValidation==true){

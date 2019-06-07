@@ -34,7 +34,7 @@ function topPage(){
 		);
 		
 		$(window).scroll(function(){
-				if($(this).scrollTop()>170) $('.scrollUp').fadeIn();
+				if($(this).scrollTop()>150) $('.scrollUp').fadeIn();
 				else $('.scrollUp').fadeOut();	
 			}	
 		);
@@ -245,95 +245,12 @@ function bottomPage(){
 <?php
 }
 
-function displayTransactionButtons(){
+function displayTransactionButtons($db){
 ?>
 <div id="transBtns" class="row mt-5 justify-content-md-center">
-  <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
-  <button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
- </div> 
- 	<!--- Add income MODAL -->
-	<div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="addIncome" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="addIncomeLabel">Add income:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<form action="addTransactionVerify.php" method="post">
-			<input type="text" class="form-control" id="userIdI" value="<?php $_SESSION['idUser']?>" name="idUser" hidden>
-			<input type="text" class="form-control" id="transactionTypeI" value="I" name="transactionType" hidden>
-			  <div class="form-group">
-				<label for="incomeDate" class="col-form-label">Date:</label>
-				<input type="text" class="form-control" id="incomeDate" name="incomeDate">
-			  </div>
-			  <div class="form-group">
-				<label for="amountI" class="col-form-label">Amount:</label>
-				<input type="text" class="form-control" id="amountI" name="amountI">
-			  </div>
-			  <div class="form-group">
-				<label for="categoryI" class="col-form-label">Category:</label>
-				<input type="text" class="form-control" id="categoryI" name="categoryI">
-			  </div>
-			  <div class="form-group">
-				<label for="descriptionI" class="col-form-label">Description:</label>
-				<input type="text" class="form-control" id="descriptionI" maxlength="50" name="descriptionI">
-			  </div>
-
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-warning">Save income</button>
-		  </div>
-		  </form>
-		 </div> 
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
-<!--- Add expense MODAL -->
-	<div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="addExpenseLabel">Add expense:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-		  <form action="addTransactionVerify.php">
-			<input type="text" class="form-control" id="userIdE" value="$_SESSION" hidden>
-			<input type="text" class="form-control" id="transactionTypeE" value="E" hidden>
-			<input type="text" class="form-control" id="transactionIdE" value="$_SESSION" hidden>
-			  <div class="form-group">
-				<label for="expenseDate" class="col-form-label">Date:</label>
-				<input type="text" class="form-control" id="expenseDate">
-			  </div>
-			  <div class="form-group">
-				<label for="amountE" class="col-form-label">Amount:</label>
-				<input type="text" class="form-control" id="amountE">
-			  </div>
-			  <div class="form-group">
-				<label for="categoryE" class="col-form-label">Category:</label>
-				<input type="text" class="form-control" id="categoryE">
-			  </div>
-			  <div class="form-group">
-				<label for="descriptionE" class="col-form-label">Description:</label>
-				<input type="text" class="form-control" id="descriptionE" maxlength="50">
-			  </div>
-			
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-warning">Save expense</button>
-			  </div>
-		  </form>
-		  </div>
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
+  <?php displayAddIncomeB(getIncomCat($db));
+  displayAddExpenseB(getPayCat($db),getExpenseCat($db));?>
+</div> 
 <?php
 }
 
@@ -405,8 +322,129 @@ function editTransactionIcon(){
 <!--- end modal -->
 <?php
 }
+function displayAddIncomeB($catI){
+?>
+ <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
+ 
+ <!--- Add income MODAL -->
+	<div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="addIncome" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addIncomeLabel">Add income:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="addTransactionVerify.php" method="post">
+			<input type="text" class="form-control" id="transactionType" value="I" name="transactionType" hidden>
+			 <div class="form-group">
+			  <label for="incomeDate" class="col-form-label">Date:</label>
+			  <input type="text" class="form-control" id="incomeDate" name="transactionDate" required>
+			 </div>
+			 <div class="form-group">
+				<label for="amountI" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amountI" name="amount" required>
+			 </div>
+			 <div class="form-group">
+			  <label for="Category" class="col-form-label">Category:</label>
+			  <div class="input-group mb-3">
+				<select class="custom-select" id="selectCatI" name="Category" required>
+				<option value="0">Choose...</option>
+				 <?php
+				 foreach($catI as $row){
+				 echo "<option value=\"{$row['idCatI']}\">".$row['nameCatI']."</option>";
+				 }
+				 ?>
+				 </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="descriptionI" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="descriptionI" maxlength="50" name="description" required>
+			  </div>
 
-function displayAddIncomeForm(){
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Save income</button>
+		  </div>
+		  </form>
+		 </div> 
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<?php
+}
+function displayAddExpenseB($catP, $catE){
+?>
+ <button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
+ <div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addExpenseLabel">Add expense:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <form action="addTransactionVerify.php" method="post">
+			<input type="text" class="form-control" id="transactionType" value="E" name="transactionType"hidden>
+			  <div class="form-group">
+				<label for="expenseDate" class="col-form-label">Date:</label>
+				<input type="text" class="form-control" id="expenseDate" name="transactionDate">
+			  </div>
+			  <div class="form-group">
+				<label for="amountE" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amountE" name="amount">
+			  </div>
+			  <div class="form-group">
+				<label for="payType" class="col-form-label">Payment Type:</label>
+				<div class="input-group">
+				 <select class="custom-select" id="PayType" name="payType" >
+				 <option value="0">Choose...</option>
+				 <?php
+				 foreach($catP as $row){
+				 echo "<option value=\"{$row['idCatPay']}\">".$row['nameCatPay']."</option>";
+				 }
+				 ?>
+				 </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="categoryE" class="col-form-label">Category:</label>
+				<div class="input-group">
+				  <select class="custom-select" id="selectCatE" name="Category"  required>
+					<option value="0">Choose...</option>
+					<?php
+					foreach($catE as $row){
+					echo "<option value=\"{$row['idCatE']}\">".$row['nameCatE']."</option>";
+					}
+					?>
+				  </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="descriptionE" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="descriptionE" maxlength="50" name="description">
+			  </div>
+			
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-warning">Save expense</button>
+			  </div>
+		  </form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<?php
+}
+/******************************/
+function displayAddIncomeForm($catI){
 ?>
 
 <main>
@@ -427,7 +465,6 @@ function displayAddIncomeForm(){
   }
   ?>
 	<form action="addTransactionVerify.php" method="post">
-	 <input type="text" class="form-control" id="userId" value="<?= $_SESSION['idUser']?>" name="idUser" hidden>
 	 <input type="text" class="form-control" id="transactionType" value="I" name="transactionType" hidden>
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group col-md-3">
@@ -440,7 +477,16 @@ function displayAddIncomeForm(){
 	  </div>
 	  <div class="form-group col-md-3">
 		<label for="Category" class="col-form-label">Category:</label>
-		<input type="text" class="form-control" id="Category" name="Category" required>
+		<div class="input-group mb-3">
+		  <select class="custom-select" id="selectCatI" name="Category">
+			<option value="0">Choose...</option>
+			<?php
+			foreach($catI as $row){
+			echo "<option value=\"{$row['idCatI']}\">".$row['nameCatI']."</option>";
+			}
+			?>
+		  </select>
+		</div>
 	  </div>
 	 </div>
 	 <div class="form-row justify-content-md-center">
@@ -453,7 +499,7 @@ function displayAddIncomeForm(){
 	  <button type="submit" class="btn btn-success col-sm-4 m-md-4">Add transaction</button>
 	 </div>
 	 <div  class="row justify-content-sm-center">
-	  <a  class="btnCategory btn btn-warning col-sm-3 m-md-3 " role="button">Add income category</a>
+	  <a  class="btn btn-outline-success col-sm-3 m-md-3 " role="button">Add income category</a>
 	 </div>
 	</form>
  </div>
@@ -462,7 +508,7 @@ function displayAddIncomeForm(){
 <?php
 }
 
-function displayAddExpenseForm(){
+function displayAddExpenseForm($catE, $catP){
 ?>
 
 <main>
@@ -488,37 +534,80 @@ function displayAddExpenseForm(){
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group col-md-3">
 		<label for="transactionDate" class="col-form-label">Date:</label>
-		<input type="text" class="form-control" id="transactionDate" name="transactionDate">
+		<input type="text" class="form-control" id="transactionDate" name="transactionDate" required>
 	  </div>
 	  <div class="form-group col-md-3">
 		<label for="amount" class="col-form-label">Amount:</label>
-		<input type="text" class="form-control" id="amount" name="amount">
+		<input type="text" class="form-control" id="amount" name="amount" required>
 	  </div>
 	  <div class="form-group col-md-3">
 		<label for="payType" class="col-form-label">Payment type:</label>
-		<input type="text" class="form-control" id="payType" name="payType">
+		<div class="input-group mb-3">
+		  <select class="custom-select" id="PayType" name="payType">
+			<option value="0">Choose...</option>
+			<?php
+			foreach($catP as $row){
+			echo "<option value=\"{$row['idCatPay']}\">".$row['nameCatPay']."</option>";
+			}
+			?>
+		  </select>
+		</div>
 	  </div>
 	 </div>
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group col-md-3">
 		<label for="Category" class="col-form-label">Category:</label>
-		<input type="text" class="form-control" id="Category" name="Category">
+		<div class="input-group mb-3">
+		  <select class="custom-select" id="selectCatE" name="Category"  >
+			<option value="0">Choose...</option>
+			<?php
+			foreach($catE as $row){
+			echo "<option value=\"{$row['idCatE']}\">".$row['nameCatE']."</option>";
+			}
+			?>
+		  </select>
+		</div>
 	  </div>
 	  <div class="form-group col-md-6">
 		<label for="description" class="col-form-label">Description:</label>
-		<input type="text" class="form-control" id="description" maxlength="50" name="description">
+		<input type="text" class="form-control" id="description" maxlength="50" name="description"  required>
 	  </div>
 	 </div>
 	 <div class="row justify-content-sm-center">
-	  <button type="submit" class="btn btn-success col-sm-4 m-md-4">Add transaction</button>
+	  <button type="submit" class="btn btn-warning col-sm-4 m-md-4">Add transaction</button>
 	 </div>
 	 <div  class="row justify-content-sm-center">
-	  <a  class="btnCategory btn btn-warning col-sm-3 m-md-3 " role="button">Add expense category</a>
+	  <a  class="btn btn-outline-warning col-sm-3 m-md-3 " role="button">Add expense category</a>
 	 </div>
 	</form>
  </div>
  </article>
 </main>	
+<?php
+}
+
+function displayStatementDatepicker(){
+?>
+  <!-- datepicker for custom period -->
+ <div class="row">
+	<h5 class="mb-md-3 col-md-12">Choose statement period:</h5>
+</div>
+	<form action="" method="post">
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group m-xs-1 col-md-4">
+		<label for="datepickerFrom" class="col-form-label">from:</label> 
+		<input type="text" class="form-control m-2" id="datepickerFrom" name="dateFrom" placeholder="From">
+	  </div>
+	  <div class="form-group m-xs-1 col-md-4">
+		<label for="datepickerTo" class="col-form-label">to: </label>
+		<input type="text" class="form-control m-2" id="datepickerTo" name="dateTo" placeholder="To">
+	  </div>
+    </div>
+	<div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-warning col-sm-4 m-md-4">Submit</button>
+	</div>
+   </form>
+    <!-- end datepicker -->
 <?php
 }
 ?>
