@@ -14,11 +14,11 @@ $prevYM=$currentYear.'-'.$prevMonth.'-01';
 $prevYMEnd=$currentYear.'-'.$prevMonth.'-31';
 
 if($view=='cm'||($view=='cp' && !isset($_POST['dateFrom']))){
- $sqlQueryI=$db->query("select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ $sqlQueryI=$db->query("SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
  JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
  WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$currentYM'
  UNION
- select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+ SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
  JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
  WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$currentYM'
  ORDER BY incomeDate");
@@ -33,12 +33,12 @@ if($view=='cm'||($view=='cp' && !isset($_POST['dateFrom']))){
  ORDER BY expenseDate");
 
 }else if($view=='pm'){
- $sqlQueryI=$db->query("select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ $sqlQueryI=$db->query("SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
  JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
  WHERE i.idUser={$_SESSION['idUser']} 
  AND i.incomeDate BETWEEN '$prevYM' AND '$prevYMEnd' 
  UNION
- select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+ SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
  JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
  WHERE i.idUser={$_SESSION['idUser']} 
  AND i.incomeDate BETWEEN '$prevYM' AND '$prevYMEnd'ORDER BY incomeDate");
@@ -56,12 +56,12 @@ if($view=='cm'||($view=='cp' && !isset($_POST['dateFrom']))){
  $dateFrom=$_POST['dateFrom'];
  $dateTo=$_POST['dateTo'];
 	
- $sqlQueryI=$db->query("select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ $sqlQueryI=$db->query("SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
  JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
  WHERE i.idUser={$_SESSION['idUser']} 
  AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' 
  UNION
- select i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+ SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
  JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
  WHERE i.idUser={$_SESSION['idUser']} 
  AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY incomeDate");
