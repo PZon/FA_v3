@@ -9,19 +9,19 @@ function verifyUser(){
 }
 
 function getIncomCat($_DB){
-	$sqlQueryI=$_DB->query("select idCatI, nameCatI from in_cat UNION select idUserCatIn, nameUserCatIn from user_in_cat WHERE idUser={$_SESSION['idUser']}");
+	$sqlQueryI=$_DB->query("SELECT idCatI, nameCatI FROM in_cat UNION SELECT idUserCatIn, nameUserCatIn FROM user_in_cat WHERE idUser={$_SESSION['idUser']}");
 	$catI=$sqlQueryI->fetchAll();
 	return $catI;
 }
 
 function getExpenseCat($_DB){
-	$sqlQueryE=$_DB->query("select idCatE, nameCatE from ex_cat UNION select idUserCatEx, nameUserCatEx from user_ex_cat WHERE idUser={$_SESSION['idUser']}");
+	$sqlQueryE=$_DB->query("SELECT idCatE, nameCatE FROM ex_cat UNION SELECT idUserCatEx, nameUserCatEx FROM user_ex_cat WHERE idUser={$_SESSION['idUser']}");
 	$catE=$sqlQueryE->fetchAll();
 	return $catE;
 }
 
 function getPayCat($_DB){
-	$sqlQueryP=$_DB->query("select idCatPay, nameCatPay from pay_cat UNION select idUserCatPay, nameUserCatPay from user_pay_cat WHERE idUser={$_SESSION['idUser']}");
+	$sqlQueryP=$_DB->query("SELECT idCatPay, nameCatPay FROM pay_cat UNION SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat WHERE idUser={$_SESSION['idUser']}");
 	$catP=$sqlQueryP->fetchAll();
 	return $catP;
 }
