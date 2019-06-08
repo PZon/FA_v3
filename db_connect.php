@@ -2,7 +2,7 @@
 $dbConfig=require_once('db_config.php');
 
 try{
- $db=new PDO(
+ $_DB=new PDO(
   "mysql:host={$dbConfig['host']};
    dbname={$dbConfig['db']};
    charset=utf8",

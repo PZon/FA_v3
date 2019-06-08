@@ -245,11 +245,11 @@ function bottomPage(){
 <?php
 }
 
-function displayTransactionButtons($db){
+function displayTransactionButtons($_DB){
 ?>
 <div id="transBtns" class="row mt-5 justify-content-md-center">
-  <?php displayAddIncomeB(getIncomCat($db));
-  displayAddExpenseB(getPayCat($db),getExpenseCat($db));?>
+  <?php displayAddIncomeB(getIncomCat($_DB));
+  displayAddExpenseB(getPayCat($_DB),getExpenseCat($_DB));?>
 </div> 
 <?php
 }

@@ -7,7 +7,7 @@ session_start();
 	 $nick=strtoupper($nick);
 	 $pass=filter_input(INPUT_POST,'pass',FILTER_SANITIZE_STRING);
 	 
-	 $query=$db->prepare('select * from users where Nick = :nick');
+	 $query=$_DB->prepare('select * from users where Nick = :nick');
 	 $query->bindValue(':nick', $nick, PDO::PARAM_STR);
 	 $query->execute();
 	 

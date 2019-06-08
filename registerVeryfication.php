@@ -31,7 +31,7 @@ if(isset($_POST['email'])){
 	 exit();	
 	}
 	
-	$queryNick=$db->prepare('select * from users where Nick = :nick');
+	$queryNick=$_DB->prepare('select * from users where Nick = :nick');
     $queryNick->bindValue(':nick', $nick, PDO::PARAM_STR);
 	$queryNick->execute();
 	
@@ -42,7 +42,7 @@ if(isset($_POST['email'])){
 	 exit();	 
 	}
 	
-	$queryEmail=$db->prepare('select * from users where  Email = :email');
+	$queryEmail=$_DB->prepare('select * from users where  Email = :email');
     $queryEmail->bindValue(':email', $email, PDO::PARAM_STR);
 	$queryEmail->execute();
 	
@@ -89,7 +89,7 @@ if(isset($_POST['email'])){
 
 if($formVerification==true){
    $pass_hash=password_hash($pass1, PASSWORD_DEFAULT);
-   $query=$db->prepare('insert into users values (NULL,:Nick, :Email, :Password)');
+   $query=$_DB->prepare('insert into users values (NULL,:Nick, :Email, :Password)');
    $query->bindValue(':Nick', $nick, PDO::PARAM_STR);
    $query->bindValue(':Email', $email, PDO::PARAM_STR);
    $query->bindValue(':Password', $pass_hash, PDO::PARAM_STR);

@@ -14,75 +14,17 @@ $prevYM=$currentYear.'-'.$prevMonth.'-01';
 $prevYMEnd=$currentYear.'-'.$prevMonth.'-31';
 
 if($view=='cm'||($view=='cp' && !isset($_POST['dateFrom']))){
- $sqlQueryI=$db->query("SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
- JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
- WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$currentYM'
- UNION
- SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
- JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
- WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$currentYM'
- ORDER BY incomeDate");
- 
- $sqlQueryE=$db->query("SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
- JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
- JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$currentYM'
- UNION 
- SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
- JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
- JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$currentYM'
- ORDER BY expenseDate");
-
+ $incomes=getIncomesCM($_DB, $currentYM);
+ $expenses=getExpensesCM($_DB, $currentYM);
 }else if($view=='pm'){
- $sqlQueryI=$db->query("SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
- JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
- WHERE i.idUser={$_SESSION['idUser']} 
- AND i.incomeDate BETWEEN '$prevYM' AND '$prevYMEnd' 
- UNION
- SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
- JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
- WHERE i.idUser={$_SESSION['idUser']} 
- AND i.incomeDate BETWEEN '$prevYM' AND '$prevYMEnd'ORDER BY incomeDate");
- 
- $sqlQueryE=$db->query("SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
- JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
- JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
- e.expenseDate BETWEEN '$prevYM' AND '$prevYMEnd'
- UNION 
- SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
- JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
- JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
- e.expenseDate BETWEEN '$prevYM' AND '$prevYMEnd'ORDER BY expenseDate");
+ $incomes=getIncomesPM($_DB, $prevYM, $prevYMEnd);
+ $expenses=getExpensesPM($_DB, $prevYM, $prevYMEnd);
 }else if($view=='cp' && isset($_POST['dateFrom'])){
  $dateFrom=$_POST['dateFrom'];
  $dateTo=$_POST['dateTo'];
-	
- $sqlQueryI=$db->query("SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
- JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
- WHERE i.idUser={$_SESSION['idUser']} 
- AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' 
- UNION
- SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
- JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
- WHERE i.idUser={$_SESSION['idUser']} 
- AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY incomeDate");
- 
- $sqlQueryE=$db->query("SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
- JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
- JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
- e.expenseDate BETWEEN '$dateFrom' AND '$dateTo'
- UNION 
- SELECT e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
- JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
- JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
- e.expenseDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY expenseDate");
+ $incomes=getIncomesCP($_DB, $dateFrom, $dateTo);
+ $expenses=getExpensesCP($_DB, $dateFrom, $dateTo);
 }
-
-
-
-$incomes=$sqlQueryI->fetchAll();
-$expenses=$sqlQueryE->fetchAll();
-
-
 
 topPage();
 displayMainMenu();
@@ -173,7 +115,7 @@ displayMainMenu();
 	  </tbody>
   </table>
  </div>
-<?php displayTransactionButtons($db) ?>  
+<?php displayTransactionButtons($_DB) ?>  
 </div>
 </article>
 </main>	
