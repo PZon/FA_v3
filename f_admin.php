@@ -2,28 +2,37 @@
 require_once('functions_main.php');
 
 function verifyUser(){
-	if(!isset($_SESSION['userVerified'])){
-		header('location:index.php');
-		exit();
-	}
+ if(!isset($_SESSION['userVerified'])){
+  header('location:index.php');
+  exit();
+ }
 }
 
 function getIncomCat($_DB){
-	$sqlQueryI=$_DB->query("SELECT idCatI, nameCatI FROM in_cat UNION SELECT idUserCatIn, nameUserCatIn FROM user_in_cat WHERE idUser={$_SESSION['idUser']}");
-	$catI=$sqlQueryI->fetchAll();
-	return $catI;
+ $sqlQueryI=$_DB->query("SELECT idCatI, nameCatI FROM in_cat 
+ UNION 
+ SELECT idUserCatIn, nameUserCatIn FROM user_in_cat 
+ WHERE idUser={$_SESSION['idUser']}");
+ $catI=$sqlQueryI->fetchAll();
+ return $catI;
 }
 
 function getExpenseCat($_DB){
-	$sqlQueryE=$_DB->query("SELECT idCatE, nameCatE FROM ex_cat UNION SELECT idUserCatEx, nameUserCatEx FROM user_ex_cat WHERE idUser={$_SESSION['idUser']}");
-	$catE=$sqlQueryE->fetchAll();
-	return $catE;
+ $sqlQueryE=$_DB->query("SELECT idCatE, nameCatE FROM ex_cat 
+ UNION 
+ SELECT idUserCatEx, nameUserCatEx FROM user_ex_cat 
+ WHERE idUser={$_SESSION['idUser']}");
+ $catE=$sqlQueryE->fetchAll();
+ return $catE;
 }
 
 function getPayCat($_DB){
-	$sqlQueryP=$_DB->query("SELECT idCatPay, nameCatPay FROM pay_cat UNION SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat WHERE idUser={$_SESSION['idUser']}");
-	$catP=$sqlQueryP->fetchAll();
-	return $catP;
+ $sqlQueryP=$_DB->query("SELECT idCatPay, nameCatPay FROM pay_cat
+ UNION 
+ SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat 
+ WHERE idUser={$_SESSION['idUser']}");
+ $catP=$sqlQueryP->fetchAll();
+ return $catP;
 }
 
 function getIncomesCM($_DB, $currentYM){

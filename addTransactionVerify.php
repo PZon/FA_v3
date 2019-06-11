@@ -54,9 +54,9 @@ if(isset($_POST['transactionType'])){
 
 if($formValidation==true){
  if($transactionType=='I'){	
-  $query=$db->prepare('INSERT INTO income VALUES (NULL, :userId, :category, :transactionDate, :amount, :description )');
+  $query=$_DB->prepare('INSERT INTO income VALUES (NULL, :userId, :category, :transactionDate, :amount, :description )');
  }else if($transactionType=='E'){
-  $query=$db->prepare('INSERT INTO expenses VALUES (NULL, :userId, :category, :payType, :transactionDate, :amount, :description )'); 
+  $query=$_DB->prepare('INSERT INTO expenses VALUES (NULL, :userId, :category, :payType, :transactionDate, :amount, :description )'); 
   $query->bindValue(':payType', $payType, PDO::PARAM_STR);
  }
    $query->bindValue(':userId', $userId, PDO::PARAM_STR);

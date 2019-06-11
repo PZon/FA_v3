@@ -71,15 +71,15 @@ if(isset($_POST['email'])){
      header('Location: registerForm.php');exit();
 	}
 	
-	/*$captchaKey="privateKey";
+/*	$captchaKey="secretkey";
 	$checkCaptcha=file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$captchaKey.'&response='.$_POST['g-recaptcha-response']);
 	$captchaRespond=json_decode($checkCaptcha);
-	
+	*/
 	if(!($captchaRespond->success)){
 	 $formVerification=false;
 	 $_SESSION['regError']='ERROR: Confirm you are not a BOT';
      header('Location: registerForm.php');exit();
-	}*/
+	}
 	
  }
 }else{

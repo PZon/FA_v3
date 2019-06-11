@@ -149,7 +149,7 @@ function displayRegisterForm(){
 				<small id="registerHelp" class="form-text text-warning">Fields with * are required</small>
 			  </div>
 			  <!--div class="form-group">
-				<div class="g-recaptcha" data-sitekey="Page key"></div>
+				<div class="g-recaptcha" data-sitekey="sitekey"></div>
 			  </div-->
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -193,7 +193,7 @@ function displayMainMenu(){
           <i class='fas fa-cog'></i> Settings
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-          <a class="dropdown-item" href="b_settings.html?type=account">&#9656; Account</a>
+          <a class="dropdown-item" href="settings.php?type=account">&#9656; Account</a>
           <a class="dropdown-item" href="b_settings.html?type=trans">&#9656; Transaction</a>
         </div>
       </li>
